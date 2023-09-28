@@ -8,7 +8,7 @@ import loader from '../assets/loading.gif';
 const GetWeather = () => {
 
     const [loacAccess, setloacAccess] = useState(false);
-    const [loading,setLoading] = useState(false);
+    const [loading,setLoading] = useState(true);
     const [cityName,setCityName] = useState('');
     const [countryIcon,setCountryIcon] = useState('');
     const [desc,setDesc] = useState('');
@@ -28,7 +28,7 @@ const GetWeather = () => {
     }
 
     function setAllData(weatherInfo){
-        console.log(weatherInfo)
+        //console.log(weatherInfo)
         setCityName(weatherInfo?.name);
         setCountryIcon(`https://flagcdn.com/144x108/${weatherInfo?.sys?.country.toLowerCase()}.png`);
         setDesc(weatherInfo?.weather?.[0]?.description);
@@ -48,9 +48,7 @@ const GetWeather = () => {
         sessionStorage.setItem("user-coordinates", JSON.stringify(userCoordinates));
         const weatherInfo = await fetchUserWeatherInfo(userCoordinates);
         setloacAccess(true);
-        setLoading(true);
         setAllData(weatherInfo);
-        setLoading(false);
     }
 
     async function getfromSessionStorage() {
@@ -65,6 +63,7 @@ const GetWeather = () => {
             setloacAccess(true);
             setAllData(weatherInfo);
         }
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -72,28 +71,29 @@ const GetWeather = () => {
     }, [])
 
     return (
-        
-            loacAccess ? ( 
-                            loading ?   (<div className="sub-container loading-container">
-                                            <img src={loader} width="150" height="150" alt='' />
-                                            <p>Loading</p>
-                                        </div>) 
-                                        :
-                                        (<WeatherCard cityName={cityName} countryIcon={countryIcon} desc={desc} weatherIcon={weatherIcon}
-                                            temp={temp} windspeed={windspeed} humidity={humidity} cloudiness={cloudiness}
-                                        />)
-                        )
-                        : 
-                        (
-                            <div className="sub-container grant-location-container"> 
-                                <img src={location} width="80" height="80" loading="lazy" alt=''/>
-                                <p>Grant Location Access</p>
-                                <p>Allow Access to get weather Information</p>
-                                <button className='btn' onClick={() => getLocationHandler()}>Grant Access</button>
+            loading ?   (   
+                            <div className="sub-container loading-container">
+                                <img src={loader} width="150" height="150" alt='' />
+                                <p>Loading</p>
                             </div>
                         )
-        
-        
+                        :
+                        ( 
+                            loacAccess ? (
+                                            <WeatherCard cityName={cityName} countryIcon={countryIcon} desc={desc} weatherIcon={weatherIcon}
+                                            temp={temp} windspeed={windspeed} humidity={humidity} cloudiness={cloudiness}/>
+                                        ) 
+                                        :
+                                        (
+                                            <div className="sub-container grant-location-container"> 
+                                                <img src={location} width="80" height="80" loading="lazy" alt=''/>
+                                                <p>Grant Location Access</p>
+                                                <p>Allow Access to get weather Information</p>
+                                                <button className='btn' onClick={() => getLocationHandler()}>Grant Access</button>
+                                            </div>
+                                        )
+                        )
+                        
     )
 }
 
