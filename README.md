@@ -2,6 +2,8 @@
 
 <p>Visit live <a href='https://world-weather-today.netlify.app/' target='_blank'>link</a></p>
 
+<img src="./public/Website.png" alt="image">
+
 <p>Welcome to the React Weather App - a user-friendly web application that provides weather details for the current location based on the user's GPS coordinates. Additionally, users can search for weather information for different cities.</p>
 <br>
 # Features
